@@ -2,8 +2,7 @@
 
 This specification contains a collection of RESTful APIs used to specify the digital relationship between *mobility as a service* Providers and the Agencies that regulate them.
 
-* Authors: LADOT
-* Date: 19 Sep 2019	
+* Date: 19 Sep 2019
 * Version: BETA
 
 ## Table of Contents
@@ -14,7 +13,6 @@ This specification contains a collection of RESTful APIs used to specify the dig
 * [Vehicle - Register](#vehicle---register)
 * [Vehicle - Event](#vehicle---event)
 * [Vehicles - Update Telemetry](#vehicles---telemetry)
-* [Service Areas](#service-areas)
 * [Vehicle Events](#vehicle-events)
 * [Telemetry Data](#telemetry-data)
 * [Enum definitions](#enum-definitions)
@@ -26,7 +24,7 @@ When making requests, the Agency API expects `provider_id` to be part of the cla
 
 ## Timestamps
 
-As with the Provider API, `timestamp` refers to integer milliseconds since Unix epoch. 
+As with the Provider API, `timestamp` refers to integer milliseconds since Unix epoch.
 
 ## Strings
 
@@ -59,8 +57,8 @@ If `device_id` is specified, `GET` will return a single vehicle record, otherwis
         "next": "https://..."
     }
 }
-``` 
-  
+```
+
 A vehicle record is as follows:
 
 | Field         | Type      | Field Description                                                             |
@@ -83,7 +81,7 @@ _No content returned on vehicle not found._
 
 ## Vehicle - Register
 
-The `/vehicles` registration endpoint is used to register a vehicle for use in the Agency jurisdiction. 
+The `/vehicles` registration endpoint is used to register a vehicle for use in the Agency jurisdiction.
 
 Endpoint: `/vehicles`
 Method: `POST`
@@ -119,7 +117,7 @@ _No content returned on success._
 
 ## Vehicle - Update
 
-The `/vehicles` update endpoint is used to update some mutable aspect of a vehicle.  For now, only `vehicle_id`. 
+The `/vehicles` update endpoint is used to update some mutable aspect of a vehicle.  For now, only `vehicle_id`.
 
 Endpoint: `/vehicles/{device_id}`
 Method: `PUT`
@@ -210,37 +208,6 @@ Body Params:
 | `bad_param`     | A validation error occurred.         | Array of parameters with errors |
 | `invalid_data`  | None of the provided data was valid. |                                 |
 | `missing_param` | A required parameter is missing.     | Array of missing parameters     |
-
-## Service Areas
-
-The `/service_areas` endpoint gets the list of service areas available to the Provider or a single area.
-
-Endpoint: `/service_areas/{service_area_id}`
-Method: `GET`
-
-Path Params:
-
-| Field             | Type | Required/Optional | Field Description                                                                                                                     |
-| ----------------- | ---- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `service_area_id` | UUID | Optional          | If provided, retrieve a specific service area (e.g. a retired or old service area). If omitted, will return all active service areas. |
-
-Query Params:
-
-| Parameter     | Type   | Required/Optional | Description                                                                                                                                                                |
-| ------------- | ------ | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `bbox`        | String | Optional          | The bounding box upper, left, lower and right coordinates in WGS84 degrees. All geometries overlapping this rectangle will be returned. The format is: `lat,long;lat,long` |
-
-200 Success Response:
-
-| Field              | Types                               | Required/Optional | Field Description                                                                           |
-| ------------------ | ----------------------------------- | ----------------- | ------------------------------------------------------------------------------------------- |
-| `service_area_id`  | UUID                                 | Required          | UUID issued by city                                                                       |
-| `start_date`       | Timestamp                            | Required          | Date at which this service area became effective                                            |
-| `end_date`         | Timestamp                            | Optional          | If exists, Date at which this service area was replaced.                                    |
-| `area`             | MultiPolygon                         | Required          | GeoJson [MultiPolygon](https://tools.ietf.org/html/rfc7946#section-3.1.7) in WGS84 degrees. |
-| `prev_area`        | UUID                                 | Optional          | If exists, the UUID of the prior service area.                                              |
-| `replacement_area` | UUID                                 | Optional          | If exists, the UUID of the service area that replaced this one                              |
-| `type`             | Enum                                 | Required          | See [area types](#area-types)                                                         |
 
 ## Vehicle Events
 
